@@ -2,8 +2,10 @@ package database
 
 import (
 	"fmt"
+	"log"
 	"os"
 
+	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -11,7 +13,11 @@ import (
 // NewPsqlDB function will connect to local PostgreSql database with data source name parameters
 // which are defined in environment file. Ping() function used to check whether database is
 // working or not.
-func NewPsqlDB() (*gorm.DB, error) {
+func NewPsqlDB(envFile string) (*gorm.DB, error) {
+	err := godotenv.Load(envFile)
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 	dataSourceName := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
 		os.Getenv("APP_DB_HOST"),
 		os.Getenv("APP_DB_PORT"),
