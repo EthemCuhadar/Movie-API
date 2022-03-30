@@ -4,23 +4,23 @@ import (
 	"fmt"
 	"log"
 
+	utils "github.com/EthemCuhadar/Movie-API/pkg/helper"
 	database "github.com/EthemCuhadar/Movie-API/pkg/migrations"
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	// MovieList, _ := utils.ReadJSON("C://Users/iethe/go/src/Movie-API/movies.json")
+	MovieList, _ := utils.ReadJSON("C://Users/iethe/go/src/Movie-API/movies.json")
 	// fmt.Println(reflect.TypeOf(MovieList[99]))
-	err := godotenv.Load("../../.env")
-	if err != nil {
-		log.Fatal(err)
-	}
 
-	db, err := database.NewPsqlDB()
+	db, err := database.NewPsqlDB("../../.env")
 	if err != nil {
 		log.Fatal(err)
 	}
 	if db == nil {
 		fmt.Println("db is nil")
 	}
+
+	movieRepo := database.NewMovieRepository(db)
+	movieRepo.Migrations()
+	movieRepo.InsertData(MovieList)
 }
