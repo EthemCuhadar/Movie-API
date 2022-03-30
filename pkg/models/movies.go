@@ -5,8 +5,8 @@ package models
 // Movie model with relative fields created. Necessary JSON
 // parameters can be seen below.
 type Movie struct {
-	ID        int      `json:"id"`
-	Title     string   `json:"title"`
+	ID        int      `json:"id" gorm:"primary_key;unique;type:INT;not null"`
+	Title     string   `json:"title" gorm:"size:100;not null"`
 	Year      string   `json:"year"`
 	Runtime   string   `json:"runtime"`
 	Genres    []string `json:"genres"`
